@@ -1,0 +1,58 @@
+﻿
+@*@{
+    ViewBag.Title = "Index";
+    List<SelectListItem> sli = new List<SelectListItem>();
+    sli.Add(new SelectListItem() { Text = "Alabama", Value = "1" });
+    sli.Add(new SelectListItem() { Text = "Alaska", Value = "2" });
+    sli.Add(new SelectListItem() { Text = "Arizona", Value = "3" });
+    sli.Add(new SelectListItem() { Text = "Arkansas", Value = "4" });
+    sli.Add(new SelectListItem() { Text = "California", Value = "5" });
+    sli.Add(new SelectListItem() { Text = "Colorado", Value = "6" });
+    sli.Add(new SelectListItem() { Text = "Connecticut", Value = "7" });
+    sli.Add(new SelectListItem() { Text = "Delaware", Value = "8" });
+} 
+
+<h2>Index</h2>
+
+@Html.DropDownList("StateList", sli, "Select State of Residency" )*@
+
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            $.getJSON("Home/States/List", function (data) {
+                var items  = "<option>------------------------<option/>";
+                $.each(data, function (i, states) {
+                    items  += "<option value ='" + states.Value + "'>" + states.Text + "<option/>";
+                });
+                $("#States").html(items);
+            });
+            $("#States").change(function () {
+                $.getJSON("Home/Cities/List/" + $("#Cities > option:selected").attr("value"), function (data) {
+                    var items = "<option---------------------</option>";
+                    $each(data, function (i, cities) {
+                        items += "<option value ='" + cities.Value + "'>" + cities.Text + "<option/>";
+                    });
+                    $("#Cities").html(items);
+                });
+            });
+            });
+    </script>
+
+            }
+
+@{ ViewBag.Title = "Dropdown List Challenge for Global HR";
+}
+
+<h1>@ViewBag.Title</h1>
+
+@using (Html.BeginForm())
+{
+    <label for="State">States</label> 
+    <select id="State" name="States"></select>
+    <br/><br/>
+    <label for="City">Cities</label>
+    <select id="City" name="Cities"></select>
+    <br/><br/>
+
+}
+
